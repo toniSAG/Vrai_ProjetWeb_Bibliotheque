@@ -1,47 +1,7 @@
-<?php?>
-<!DOCTYPE html>
 
-<html>
-    <head>
-        <title>Gestion des emprunts et des retours</title>
-        <meta charset = "utf-8">
-        <meta name = "viewport" content = "width=device-width, initial-scale=1, user-scalable=no">
-        <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-
-        <link rel = "stylesheet" href = "<?php echo css_url('Bibliotheque_Style')?>"/>
-    </head>
-
-    <body>
-
-    <header>
-           <nav class = "navbar navbar-expand-sm bg-light navbar-light">
-
-            <div class = "container-fluid">
-
-              <ul class = "navbar-nav">
-
-                <li class = "nav-item">
-                  <a class = "nav-link active" href="acceuil">Retourner à l'acceuil</a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link active" href = "emprunt">Gestion des emprunts</a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "document">Gestion des document</a>
-                </li>
-
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "abonne">Gestion des abonnés</a>
-                </li>
-
-              </ul>
-            </div>
-
-           </nav>
-
-         </header>
+<?php 
+   // $this->load->view('empruntController');
+?>
 
 <div class = "row">
 
@@ -55,13 +15,14 @@
     <div class = "container collapse" id = "formulaireEmprunt">
 
            
-           <form class = "Form" name = "fo" method = "post" action = "">
+           
 
            
 
            <div class = "row">
             
              <div class = "justify-content-*-center">
+                <?= form_open('enregistrer-emprunt');?>
              <label for = "emprunt">Emprunt de document</label>
               
                  <input class = "form-control" type = "date" required pattern = "\d{4}-\d{2}-\d{2}" name = "date_emprunt">
@@ -73,13 +34,15 @@
                  <input id = "emprunt" class = "form-control" type = "text" name = "titre_document" placeholder = "Document emprunté">
             
 
-                 <button class = "btn btn-success" type = "submit" name = "emprunt">Valider l' emprunt</button>
+                 <input class = "btn btn-success" type = "submit" name = "enregistrer" placeholder = "Valider l' emprunt">
+
+                 <?= form_close();?>
 
              </div>
 
             </div>
 
-               </form>
+               
     
     </div>
 
@@ -130,7 +93,7 @@
                 </thead>
                 <tbody>
 
-                <?php while($donnees = $listEmprunt->fetch()){?>
+                <?php foreach($emprunt as $donnees):?>
                     <tr class = "scroll_container">
                         <td class = "table-primary"><?php echo htmlspecialchars($donnees["prenom_abonne_bibliotheque"]); echo " "; echo htmlspecialchars($donnees["nom_abonne_bibliotheque"]);?></td>
                         <td class = "table-primary"><?php echo htmlspecialchars($donnees["titre_document"]); ?></td>
@@ -141,7 +104,7 @@
                         
                     </tr>
                 
-                <?php } ?>
+                <?php endforeach; ?>
 
                 </tbody>
                 </table>

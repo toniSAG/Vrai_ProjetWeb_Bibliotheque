@@ -4,7 +4,7 @@ class abonneController extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->helper(array('url', 'form'));
-        $this->load->library('form_validation');
+        $this->load->library('form_validation', 'input');
         $this->load->database();
         $this->load->model('abonneModel');
         $this->load->view('header');
@@ -43,7 +43,7 @@ class abonneController extends CI_Controller{
 
     
 
-    public function deleteAbonne(){
+    /*public function deleteAbonne(){
         if(isset($_POST['action']) && $_POST['action'] == 'supprimerAbonne'){
             $abonne = $_POST['id'];
             if($this->abonneModel->supprimer_abonne($abonne)){
@@ -51,6 +51,22 @@ class abonneController extends CI_Controller{
             }else{
                 echo 'error';
             }
+        }
+    }*/
+
+    public function deleteAbonne(){
+        $id = $this->input->post('id_abonne_bibliotheque');
+
+        
+
+        $deleted = $this->abonneModel->supprimer_abonne($id);
+
+        if ($deleted) {
+
+            echo json_encode(array('success' =>true));
+        } else {
+
+            echo json_encode(array('success' => false, 'message' => 'Echec de la suppression des données.'));
         }
     }
 

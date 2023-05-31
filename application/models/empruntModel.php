@@ -6,142 +6,84 @@ class empruntModel extends CI_Model{
 
     public function __construct(){
         parent::__construct();
+        $this->load->helper('security');
     }
 
-/*
-@$date_emprunt = $_POST["date_emprunt"];
-@$date_retour = $_POST["date_retour"];
-@$id_abonne_bibliotheque = $_POST["id_abonne_bibliotheque"];
-@$nom_abonne_bibliotheque = $_POST["nom_abonne_bibliotheque"];
-@$prenom_abonne_bibliotheque = $_POST["prenom_abonne_bibliotheque"];
-@$id_employe_bibliotheque = $_POST["id_employe_bibliotheque"];
-@$nom_employe_bibliotheque = $_POST["nom_employe_bibliotheque"];
-@$prenom_employe_bibliotheque = $_POST["prenom_employe_bibliotheque"];
-@$ISBN_document = $_POST["ISBN_document"];
-@$titre_document = $_POST["titre_document"];
+    public function empruntSave(){
 
+        $idAbonne = $this->input->post('id_abonne_bibliotheque');
+     //   $idAbonne = $this->security->xss_clean($idAbonne);
+        $idAbonne = $this->db->escape($idAbonne);
 
-@$emprunt = $_POST["emprunt"];
-@$retour = $_POST["retour"];
+        $nomAbonne = $this->input->post('nom_abonne_bibliotheque');
+      //  $nomAbonne = $this->security->xss_clean($nomAbonne);
+        $nomAbonne = $this->db->escape($nomAbonne);
 
-@$afficher = $_POST["afficher"];
+        $prenomAbonne = $this->input->post('prenom_abonne_bibliotheque');
+        $prenomAbonne = $this->security->xss_clean($prenomAbonne);
+        $prenomAbonne = $this->db->escape($prenomAbonne);
 
-$erreur = "";
+      /*  $this->db->select($idAbonne);
+        $this->db->from('abonne_bibliotheque');
+        $this->db->where($nomAbonne = '?', 'AND', $prenomAbonne = '?');*/
 
-if(isset($emprunt)){
+        $this->db->select('id_abonne_bibliotheque');
+        $this->db->from('abonne_bibliotheque');
+        $this->db->where("nom_abonne_bibliotheque = '$nomAbonne' AND prenom_abonne_bibliotheque = '$prenomAbonne'");
 
-    //selection des abonnes pour insertion de l'id abonne dans la table emprunt
+        $idEmploye = $this->input->post('id_employe_bibliotheque');
+       // $idEmploye = $this->security->xss_clean($idEmploye);
+        $idEmploye = $this->db->escape($idEmploye);
 
-    $queryAbonne = "SELECT id_abonne_bibliotheque FROM abonne_bibliotheque
-    WHERE nom_abonne_bibliotheque = ? 
-    AND prenom_abonne_bibliotheque = ?";
-    $selectAbonne = $pdo->prepare($queryAbonne);
-    $selectAbonne->execute([
-     $nom_abonne_bibliotheque, $prenom_abonne_bibliotheque
-    ]);
-    $row_abonne = $selectAbonne->fetch(PDO::FETCH_ASSOC);
+        $nomEmploye = $this->input->post('nom_employe_bibliotheque');
+        $nomEmploye = $this->security->xss_clean($nomEmploye);
+        $nomEmploye = $this->db->escape($nomEmploye);
 
-    if($row_abonne !== FALSE){
+        $prenomEmploye = $this->input->post('prenom_employe_bibliotheque');
+        $prenomEmploye = $this->security->xss_clean($prenomEmploye);
+        $prenomEmploye = $this->db->escape($prenomEmploye);
 
-        $id_abonne_bibliotheque = $row_abonne["id_abonne_bibliotheque"];
+        $this->db->select('id_employe_bibliotheque');
+        $this->db->from('employe_bibliotheque');
+        $this->db->where("nom_employe_bibliotheque = '$nomEmploye' AND prenom_employe_bibliotheque = '$prenomEmploye'");
 
-    }else{
-        echo "Aucun abonné trouvé avec les informations spécifiés.";
-    }
+        $ISBN = $this->input->post('ISBN_document');
+       // $ISBN = $this->security->xss_clean($ISBN);
+        $ISBN = $this->db->escape($ISBN);
 
-    
+        $titre = $this->input->post('titre_document');
+        $titre = $this->security->xss_clean($titre);
+        $titre = $this->db->escape($titre);
 
+        $this->db->select('ISBN_document');
+        $this->db->from('document_bibliotheque');
+        $this->db->where("titre_document = '$titre'");
 
-    //selection des employes pour insertion de l'id employe dans la table emprunt
+        $dateEmprunt = $this->input->post('date_emprunt');
+        $dateEmprunt = $this->security->xss_clean($dateEmprunt);
+        $dateEmprunt = $this->db->escape($dateEmprunt);
 
-    $queryEmploye = "SELECT id_employe_bibliotheque FROM employe_bibliotheque
-    WHERE nom_employe_bibliotheque = ?
-    AND prenom_employe_bibliotheque = ?";
-    $selectEmploye = $pdo->prepare($queryEmploye);
-    $selectEmploye->execute([
-    $nom_employe_bibliotheque, $prenom_employe_bibliotheque
-    ]);
-    $row_employe = $selectEmploye->fetch(PDO::FETCH_ASSOC);
+        $dateRetour = $this->input->post('date_retour');
+        $dateRetour = $this->security->xss_clean($dateRetour);
+        $dateRetour = $this->db->escape($dateRetour);
 
-    if($row_employe !== FALSE){
+        $data = array(
+            'date_emprunt' => $dateEmprunt,
+            'date_retour' => $dateRetour,
+            'id_abonne_bibliotheque' => $idAbonne,
+            'id_employe_bibliotheque' => $idEmploye,
+            'ISBN_document' => $ISBN
+        );
 
-        $id_employe_bibliotheque = $row_employe["id_employe_bibliotheque"];
-
-    }else{
-        echo "Aucun employé trouvé avec les informations spécifiés";
-    }
-
-
-    //selection des documents pour insertion de l'ISBN document dans la table emprunt
-
-    $queryDocument = "SELECT ISBN_document FROM document_bibliotheque
-    WHERE titre_document = ?";
-    $selectDocument = $pdo->prepare($queryDocument);
-    $selectDocument->execute([$titre_document]);
-    $row_document = $selectDocument->fetch(PDO::FETCH_ASSOC);
-
-    if($selectDocument->rowCount() > 0){
-
-        $ISBN_document = $row_document["ISBN_document"];
-
-    }else{
-        echo "Aucun document trouvé avec les informations spécifiés";
-    }
-
-    
-    
-    $queryEmprunt = "INSERT INTO emprunt (date_emprunt, date_retour, id_abonne_bibliotheque, id_employe_bibliotheque, ISBN_document)
-    VALUES (:date_emprunt, :date_retour, :id_abonne_bibliotheque, :id_employe_bibliotheque, :ISBN_document)";
-    $insertEmprunt = $pdo->prepare($queryEmprunt);
-    $insertEmprunt ->execute([
-        ':date_emprunt' => $date_emprunt,
-        ':date_retour' => $date_retour,
-        ':id_abonne_bibliotheque' => $id_abonne_bibliotheque,
-        ':id_employe_bibliotheque' => $id_employe_bibliotheque,
-        ':ISBN_document' => $ISBN_document
-    ]);
-    $execute = $insertEmprunt->fetchAll();
-    
-    if($insertEmprunt){
-        echo "<script>alert('Nouvel emprunt enregistré avec succès.')</script>";
-    }else{
-        echo "<script>alert('Erreur d'enregistrement de l'emprunt.')</script>";
+        $this->db->insert('emprunt', $data);
     }
 
 
-
-
- 
-
-}
-
-if(isset($retour)){
-    $retourEmprunt = $pdo->prepare("DELETE FROM emprunt WHERE ISBN_document = $ISBN_document");
-    $retourEmprunt ->execute();
-    $tab = $retourEmprunt->fetchAll();
-
-    
-}
-
-
-
-    $queryPrintEmprunt = "SELECT abonne_bibliotheque.nom_abonne_bibliotheque, abonne_bibliotheque.prenom_abonne_bibliotheque,
-    employe_bibliotheque.nom_employe_bibliotheque, employe_bibliotheque.prenom_employe_bibliotheque, document_bibliotheque.titre_document,
-    emprunt.ISBN_document, emprunt.date_emprunt, emprunt.date_retour
-    FROM emprunt
-    JOIN abonne_bibliotheque
-    ON emprunt.id_abonne_bibliotheque = abonne_bibliotheque.id_abonne_bibliotheque
-    JOIN employe_bibliotheque
-    ON emprunt.id_employe_bibliotheque = employe_bibliotheque.id_employe_bibliotheque
-    JOIN document_bibliotheque
-    ON emprunt.ISBN_document = document_bibliotheque.ISBN_document
-    ORDER BY emprunt.id_emprunt";
-    $listEmprunt = $pdo->query($queryPrintEmprunt);
-    
-$pdo = null;*/
 
 public function print_emprunt(){
-    $this->db->select('*');
+    $this->db->select('abonne_bibliotheque.nom_abonne_bibliotheque, abonne_bibliotheque.prenom_abonne_bibliotheque,
+    employe_bibliotheque.nom_employe_bibliotheque, employe_bibliotheque.prenom_employe_bibliotheque, document_bibliotheque.titre_document,
+    emprunt.ISBN_document, emprunt.date_emprunt, emprunt.date_retour');
     $this->db->from('emprunt');
     $this->db->join('abonne_bibliotheque', 'emprunt.id_abonne_bibliotheque = abonne_bibliotheque.id_abonne_bibliotheque');
     $this->db->join('employe_bibliotheque', 'emprunt.id_employe_bibliotheque = employe_bibliotheque.id_employe_bibliotheque');

@@ -2,7 +2,6 @@
 
 <html>
     <head>
-        <title>Inscription des abbonés</title>
         <meta charset = "utf-8">
         <meta name = "viewport" content = "width=device-width, initial-scale=1, user-scalable=no">        
         <link rel = "stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
@@ -10,7 +9,7 @@
         <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src = "https://code.jquery.com/jquery-3.6.0.min.js">
-    
+     
 </script>
     </head>
 
@@ -27,7 +26,7 @@
                 </li>
 
                 <li class = "nav-item">
-                    <a class = "nav-link" href = "<?= site_url('empruntController/emprunt')?>">Gestion des emprunts</a>
+                    <a class = "nav-link" href = "<?= site_url('EmpruntController/emprunt')?>">Gestion des emprunts</a>
                 </li>
 
                 <li class = "nav-item">

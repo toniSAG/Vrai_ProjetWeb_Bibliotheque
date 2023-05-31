@@ -52,5 +52,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-$route['abonne'] = 'abonneController/abonne';
+
+$route['abonneController/abonne'] = 'abonneController/abonne';
+$route['documentController/document'] = 'documentController/document';
+$route['EmpruntController/emprunt'] = 'EmpruntController/emprunt';
+
+$route['abonneController/deleteAbonne'] = 'abonneController/deleteAbonne';
+
+$route['enregistrer-livre'] = 'documentController/enregistrerLivre';
+
 $route['enregistrer-abonne'] = 'abonneController/enregistrerAbonne';
+$route['enregistrer-emprunt'] = 'empruntController/enregistrerEmprunt';

@@ -17,7 +17,8 @@
           <div class = "row">
 
             <div class = "justify-content-*-center">
-              <?= form_open();?>
+              <?= form_open('enregistrer-livre');?>
+              
             <label>Enregistrer des Livres</label>
             
               <input class = "form-control" type = "text" name = "ISBN_document" placeholder = "ISBN" minlength = "13" maxlength = "13"/>
@@ -150,8 +151,8 @@
                                     <td class = "table-primary"><?php echo htmlspecialchars($BD["ISBN_document"]);?></td>
                                     <td class = "table-primary"><?php echo htmlspecialchars($BD["titre_document"]);?></td>
                                     <td class = "table-primary"><?php echo htmlspecialchars($BD["date_parrution_document"]);?></td>
-                                    <td class = "table-primary"><?php echo htmlspecialchars($BD["prenom_auteur"]);echo " "; echo htmlspecialchars($donnees["nom_auteur"]);?></td>
-                                    <td class = "table-primary"><?php echo htmlspecialchars($BD["prenom_dessinateur"]);echo " "; echo htmlspecialchars($donnees["nom_dessinateur"]);?></td>
+                                    <td class = "table-primary"><?php echo htmlspecialchars($BD["prenom_auteur"]);echo " "; echo htmlspecialchars($BD["nom_auteur"]);?></td>
+                                    <td class = "table-primary"><?php echo htmlspecialchars($BD["prenom_dessinateur"]);echo " "; echo htmlspecialchars($BD["nom_dessinateur"]);?></td>
                                     
                                 </tr>
                                 <?php endforeach;?>

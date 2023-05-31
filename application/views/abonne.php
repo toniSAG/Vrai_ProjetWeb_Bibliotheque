@@ -68,12 +68,14 @@
 
                 <tr class = "scroll_container">
                     
-                    <td class = "table-primary"><?php echo htmlspecialchars($abonne['prenom_abonne_bibliotheque']);?></td>
-                    <td class = "table-primary"><?php echo htmlspecialchars($abonne['nom_abonne_bibliotheque']);?></td>
-                    <td class = "table-primary"><?php echo htmlspecialchars($abonne['mail_abonne_bibliotheque']);?></td>
-                    <td class = "table-primary text-center">
-                        <input class = "btn btn-danger btn-sm" type = "submit" value ="<?php  $abonne['id_abonne_bibliotheque'];?>" onclick = "supprimerAbonne (this)" placeholder = "Supprimer">
-                    </td>
+                    <td class = "table-primary text-center"><?php echo htmlspecialchars($abonne['prenom_abonne_bibliotheque']);?></td>
+                    <td class = "table-primary text-center"><?php echo htmlspecialchars($abonne['nom_abonne_bibliotheque']);?></td>
+                    <td class = "table-primary text-center"><?php echo htmlspecialchars($abonne['mail_abonne_bibliotheque']);?></td>
+                    <td class = "table-primary text-center"><button class = "btn btn-danger btn-sm supprimer"  id = "deleteButton" data-id ="<?php echo $abonne['id_abonne_bibliotheque'];?>">Supprimer</button>      
+                </td>
+                  <!--  <td class = "table-primary text-center">
+                        <input class = "btn btn-danger btn-sm supprimer" type = "submit" data-id ="<?php// echo $abonne['id_abonne_bibliotheque'];?>" placeholder = "Supprimer">
+                    </td>-->
                 </tr>
         
         <?php endforeach;?>
@@ -83,6 +85,35 @@
     
 
 </div>
+<script src = "https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.supprimer').click(function() {
+            var id = $(this).data('id');
+            if (confirm("Voulez vous vraiment supprimer cer élément ?")) {
+                $.ajax({
+                    url: '<?php echo base_url("abonneController/deleteAbonne");?>',
+                    type: 'POST',
+                    data: {action: "supprimer_abonne", id: id_abonne_bibliotheque},
+                    success: function(response){
+
+                        if(response.success){
+                            alert("Données supprimées avec succès !");
+                            location.reload();
+                        }else{
+                            alert("Erreur lors de la suppression des données : " + response.message);
+
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError){
+                        alert("Erreur lors de la suppression des données : " + thrownError);
+                    }
+                });
+            }
+        });
+    });
+</script>
 
     </body>
 
