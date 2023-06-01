@@ -30,11 +30,12 @@ code pour ajouter les abonnés
 /*
 *Code PHP et requêtes SQL
 *Pour la supression d'abonnés
-*existants dans la BDD
+*existants dans la BDD 
 */
 public function supprimer_abonne($id){
     $this->db->where('id_abonne_bibliotheque', $id);
     $this->db->delete('abonne_bibliotheque');
+
 
     if($this->db->affected_rows() > 0){
         return true;

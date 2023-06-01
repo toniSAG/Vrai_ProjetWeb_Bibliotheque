@@ -13,27 +13,45 @@ class EmpruntController extends CI_Controller{
     }
 
     public function enregistrerEmprunt(){
-        if($this->input->post('enregistrer')){
-            $dateEmprunt = $this->input->post('date_emprunt');
-            $dateRetour = $this->input->post('date_retour');
-            $nomAbonne = $this->input->post('nom_abonne_bibliotheque');
-            $prenomAbonne = $this->input->post('prenom_abonne_bibliotheque');
-            $nomEmploye = $this->input->post('nom_employe_bibliotheque');
-            $prenomEmploye = $this->input->post('prenom_employe_bibliotheque');
-            $titre = $this->input->post('titre_document');
 
-            if(isset($this->empruntModel)){
-                
+        $this->empruntModel->getIDAbonne();
+        $this->empruntModel->getIDEmploye();
+        $this->empruntModel->getISBN();
 
-                $this->empruntModel->empruntSave($dateEmprunt, $dateRetour, $nomAbonne, $prenomAbonne, $nomEmploye, $prenomEmploye, $titre);
+        $date_emprunt = $this->input->post('date_emprunt');
+        $date_retour = $this->input->post('date_retour');
+
+
+        $id_abonne = $this->input->post('id_abonne');
+        $id_employe = $this->input->post('id_employe');
+        $ISBN = $this->input->post('ISBN');
+
+        $data = array(
+            'date_emprunt' => $date_emprunt,
+            'date_retour' => $date_retour,
+            'id_abonne_bibliotheque' => $id_abonne,
+            'id_employe_bibliotheque' => $id_employe,
+            'ISBN_document' => $ISBN
+        );
+
+        $this->db->insert('emprunt', $data);
 
                 redirect('EmpruntController/emprunt');
-            }
+            
         }
-    }
+
+        public function deleteEmprunt($id){
+            $this->load->empruntModel->retourDoc($id);
+            redirect('EmpruntController/emprunt');
+        }
+    
 
     public function emprunt(){
         $data = array();
+        $data['abonnes'] = $this->empruntModel->getAbonne();
+        $data['employes'] = $this->empruntModel->getEmploye();
+        $data['documents'] = $this->empruntModel->getTitre();
+
         $data['emprunt'] = $this->empruntModel->print_emprunt();
         $this->load->view('emprunt', $data);
     }

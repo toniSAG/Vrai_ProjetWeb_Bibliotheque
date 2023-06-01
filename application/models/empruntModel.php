@@ -9,80 +9,107 @@ class empruntModel extends CI_Model{
         $this->load->helper('security');
     }
 
-    public function empruntSave(){
+    public function getIDAbonne(){
 
-        $idAbonne = $this->input->post('id_abonne_bibliotheque');
-     //   $idAbonne = $this->security->xss_clean($idAbonne);
-        $idAbonne = $this->db->escape($idAbonne);
+        $prenom_abonne_bibliotheque = '?';
+        $nom_abonne_bibliotheque = '?';
 
-        $nomAbonne = $this->input->post('nom_abonne_bibliotheque');
-      //  $nomAbonne = $this->security->xss_clean($nomAbonne);
-        $nomAbonne = $this->db->escape($nomAbonne);
+        $query = $this->db->select('id_abonne_bibliotheque')
+                          ->from('abonne_bibliotheque')
+                          ->where('prenom_abonne_bibliotheque', $prenom_abonne_bibliotheque)
+                          ->where('nom_abonne_bibliotheque', $nom_abonne_bibliotheque)
+                          ->get();
+        
+                          if($query->num_rows() > 0){
+                            $row = $query->row();
+                            return $row->id_abonne_bibliotheque;
+                          }
+    }
 
-        $prenomAbonne = $this->input->post('prenom_abonne_bibliotheque');
-        $prenomAbonne = $this->security->xss_clean($prenomAbonne);
-        $prenomAbonne = $this->db->escape($prenomAbonne);
+    public function getIDEmploye(){
 
-      /*  $this->db->select($idAbonne);
-        $this->db->from('abonne_bibliotheque');
-        $this->db->where($nomAbonne = '?', 'AND', $prenomAbonne = '?');*/
+        $prenom_employe_bibliotheque = '?';
+        $nom_employe_bibliotheque = '?';
 
-        $this->db->select('id_abonne_bibliotheque');
-        $this->db->from('abonne_bibliotheque');
-        $this->db->where("nom_abonne_bibliotheque = '$nomAbonne' AND prenom_abonne_bibliotheque = '$prenomAbonne'");
+        $query = $this->db->select('id_employe_bibliotheque')
+                          ->from('employe_bibliotheque')
+                          ->where('prenom_employe_bibliotheque', $prenom_employe_bibliotheque)
+                          ->where('nom_employe_bibliotheque', $nom_employe_bibliotheque)
+                          ->get();
+        
+                          if($query->num_rows() > 0){
+                            $row = $query->row();
+                            return $row->id_employe_bibliotheque;
+                          }
+                          
+    }
 
-        $idEmploye = $this->input->post('id_employe_bibliotheque');
-       // $idEmploye = $this->security->xss_clean($idEmploye);
-        $idEmploye = $this->db->escape($idEmploye);
+    public function getISBN(){
 
-        $nomEmploye = $this->input->post('nom_employe_bibliotheque');
-        $nomEmploye = $this->security->xss_clean($nomEmploye);
-        $nomEmploye = $this->db->escape($nomEmploye);
+        $titre_document = '?';
 
-        $prenomEmploye = $this->input->post('prenom_employe_bibliotheque');
-        $prenomEmploye = $this->security->xss_clean($prenomEmploye);
-        $prenomEmploye = $this->db->escape($prenomEmploye);
+        $query = $this->db->select('ISBN_document')
+                          ->from('document_bibliotheque')
+                          ->where('titre_document', $titre_document)
+                          ->get();
+        
+                          if($query->num_rows() > 0){
+                            $row = $query->row();
+                            return $row->ISBN_document;
+                          }
+    }
 
-        $this->db->select('id_employe_bibliotheque');
-        $this->db->from('employe_bibliotheque');
-        $this->db->where("nom_employe_bibliotheque = '$nomEmploye' AND prenom_employe_bibliotheque = '$prenomEmploye'");
+    public function getAbonne(){
 
-        $ISBN = $this->input->post('ISBN_document');
-       // $ISBN = $this->security->xss_clean($ISBN);
-        $ISBN = $this->db->escape($ISBN);
+        $query = $this->db->select('id_abonne_bibliotheque, nom_abonne_bibliotheque, prenom_abonne_bibliotheque')
+                 ->from('abonne_bibliotheque')
+                 ->get();
+                 if($query->num_rows() > 0){
+                    $result = $query->result_array();
+                    return $result;
+                  }
+    }
 
-        $titre = $this->input->post('titre_document');
-        $titre = $this->security->xss_clean($titre);
-        $titre = $this->db->escape($titre);
+    public function getEmploye(){
 
-        $this->db->select('ISBN_document');
-        $this->db->from('document_bibliotheque');
-        $this->db->where("titre_document = '$titre'");
+        $query = $this->db->select('id_employe_bibliotheque, nom_employe_bibliotheque, prenom_employe_bibliotheque')
+                 ->from('employe_bibliotheque')
+                 ->where('id_fonction_employe', 3)
+                 ->get();
+                 if($query->num_rows() > 0){
+                    $result = $query->result_array();
+                    return $result;
+                  }
+    }
 
-        $dateEmprunt = $this->input->post('date_emprunt');
-        $dateEmprunt = $this->security->xss_clean($dateEmprunt);
-        $dateEmprunt = $this->db->escape($dateEmprunt);
+    public function getTitre(){
 
-        $dateRetour = $this->input->post('date_retour');
-        $dateRetour = $this->security->xss_clean($dateRetour);
-        $dateRetour = $this->db->escape($dateRetour);
-
-        $data = array(
-            'date_emprunt' => $dateEmprunt,
-            'date_retour' => $dateRetour,
-            'id_abonne_bibliotheque' => $idAbonne,
-            'id_employe_bibliotheque' => $idEmploye,
-            'ISBN_document' => $ISBN
-        );
-
-        $this->db->insert('emprunt', $data);
+        $query = $this->db->select('ISBN_document, titre_document')
+        ->from('document_bibliotheque')
+        ->get();
+        if($query->num_rows() > 0){
+           $result = $query->result_array();
+           return $result;
+         }
+        
     }
 
 
+    public function retourDoc($id){
+      $this->db->where('id_emprunt', $id);
+    $this->db->delete('emprunt');
+
+
+    if($this->db->affected_rows() > 0){
+        return true;
+    }else{
+        return false;
+    }
+    }
 
 public function print_emprunt(){
     $this->db->select('abonne_bibliotheque.nom_abonne_bibliotheque, abonne_bibliotheque.prenom_abonne_bibliotheque,
-    employe_bibliotheque.nom_employe_bibliotheque, employe_bibliotheque.prenom_employe_bibliotheque, document_bibliotheque.titre_document,
+    employe_bibliotheque.nom_employe_bibliotheque, employe_bibliotheque.prenom_employe_bibliotheque, document_bibliotheque.titre_document, emprunt.id_emprunt,
     emprunt.ISBN_document, emprunt.date_emprunt, emprunt.date_retour');
     $this->db->from('emprunt');
     $this->db->join('abonne_bibliotheque', 'emprunt.id_abonne_bibliotheque = abonne_bibliotheque.id_abonne_bibliotheque');

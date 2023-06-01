@@ -9,170 +9,114 @@ class documentModel extends CI_Model{
     }
 
 
+    //selection du type de createur pour la base de donnée
+    public function selectTypeCreateur(){
 
-    public function enregistrerLivre(){
+        $query = $this->db->select('id_type_createur, libelle_type_createur')
+                          ->from('type_createur')
+                          ->get();
 
-        $type_document = $this->input->post('id_type_document');
-      //  $type_document = $this->security->xss_clean($type_document);
-        $type_document = $this->db->escape($type_document);
+                          if($query->num_rows() > 0){
+                            $result = $query->result_array();
+                            return $result;
+         
+                         }
+    }
 
-        $libelle_document = $this->input->post('libelle_type_document');
-        //$libelle_document = $this->security->xss_clean($libelle_document);
-        $libelle_document = $this->db->escape($libelle_document);
+    //selection du tyoe de document pour la base de données
 
-        $this->db->select($type_document);
-        $this->db->from('type_document_bibliotheque');
-        $this->db->where($libelle_document == 'livre');
+    public function getIDLivre(){
 
-      /*  $this->db->select('id_type_document');
-        $this->db->from('type_document_bibliotheque');*/
-
-        $ISBN = $this->input->post('ISBN_document');
-        $titre = $this->input->post('titre_document');
-        $date = $this->input->post('date_parrution_document');
-        $type_document = $this->input->post('id_type_document');
-
-        $data = array(
-            'ISBN_document' => $this->db->escape_str($ISBN),
-            'titre_document' => $this->db->escape_str($titre),
-            'date_parrution_document' => $this->db->escape_str($date),
-            'id_type_document' => $this->db->escape_str($type_document)
-        );
-
-        $this->db->insert('document_bibliotheque', $data);
+        $query = $this->db->select('id_type_document')
+                          ->from('type_document_bibliotheque')
+                          ->where('libelle_type_document', 'livre')
+                          ->get();
+        
+                          if($query->num_rows() > 0){
+                            $row = $query->row();
+                            return $row->id_type_document;
+                          }
 
     }
 
-    public function createurLivre(){
+    //sélection de 
+    /*public function createurLivre(){
 
-        $type_createur = $this->input->post('id_type_createur');
-       // $type_createur = $this->security->xss_clean($type_createur);
-        $type_createur = $this->db->escape($type_createur);
 
-        $libelle_createur = $this->input->post('libelle_type_createur');
-      //  $libelle_createur = $this->security->xss_clean($libelle_createur);
-        $libelle_createur = $this->db->escape($libelle_createur);
+        $query = $this->db->select('id_type_createur')
+                          ->from('type_createur')
+                          ->where('libelle_type_createur', 'auteur')
+                          ->get();
+        
+                          if($query->num_rows() > 0){
+                            $row = $query->row();
+                            return $row->id_type_createur;
+                          }
+    }*/
 
-        $this->db->select($type_createur);
-        $this->db->from('type_createur');
-        $this->db->where($libelle_createur == 'auteur');
+    public function getISBN(){
 
-        $nom_createur = $this->input->post('nom_createur_bibliotheque');
-        $prenom_createur = $this->input->post('prenom_createur_bibliotheque');
+        $titre_document = '?';
 
-        $data = array(
-            'nom_createur_bibliotheque' => $this->db->escape_str($nom_createur),
-            'prenom_createur_bibliotheque' => $this->db->escape_str($prenom_createur),
-            'id_type_createur' => $this->db->escape_str($type_createur),
-        );
+        $query = $this->db->select('ISBN_document')
+                      ->from('document_bibliotheque')
+                      ->where('titre_document', $titre_document)
+                      ->get();
 
-        $this->db->insert('createur_bibliotheque', $data);
+                      if($query->num_rows() > 0){
+                        $row = $query->row();
+                        return $row->ISBN_document;
     }
 
-    public function joinCreaLivre(){
+}
 
-        $ISBN = $this->input->post('ISBN_document');
-       // $ISBN = $this->security->xss_clean($ISBN);
-        $ISBN = $this->db->escape($ISBN);
+public function getIDAuteur(){
 
-        $titre = $this->input->post('titre_document');
-      //  $titre = $this->security->xss_clean($titre);
-        $titre = $this->db->escape($titre);
+    $nom_createur_bibliotheque = '?';
+    $prenom_createur_bibliotheque = '?';
 
-        $id_createur = $this->input->post('id_createur_bibliotheque');
-      //  $id_createur = $this->security->xss_clean($id_createur);
-        $id_createur = $this->db->escape($id_createur);
+    $query = $this->db->select('id_createur_bibliotheque')
+                  ->from('createur_bibliotheque')
+                  ->where('nom_createur_bibliotheque', $nom_createur_bibliotheque)
+                  ->where('prenom_createur_bibliotheque', $prenom_createur_bibliotheque)
+                  ->get();
 
-        $nom_createur = $this->input->post('nom_createur_bibliotheque');
-      //  $nom_createur = $this->security->xss_clean($nom_createur);
-        $nom_createur = $this->db->escape($nom_createur);
+                  if($query->num_rows() > 0){
+                    $row = $query->row();
+                    return $row->id_createur_bibliotheque;
+}
 
-        $prenom_createur = $this->input->post('prenom_createur_bibliotheque');
-      //  $prenom_createur = $this->security->xss_clean($prenom_createur);
-        $prenom_createur = $this->db->escape($prenom_createur);
+}
 
-        $this->db->select($ISBN);
-        $this->db->from('document_bibliotheque');
-        $this->db->where($titre == '?');
-
-        $this->db->select($id_createur);
-        $this->db->from('createur_bibliotheque');
-        $this->db->where($nom_createur == '?', 'AND', $prenom_createur == '?');
-
-        $data = array(
-            'ISBN_document' => $this->db->escape_str($ISBN),
-            'id_createur_bibliothheque_auteur' => $this->db->escape_str($id_createur)
-        );
-
-        $this->db->insert('createur_document_bibliotheque', $data);
-
+    public function selectAuteur(){
+       $query = $this->db->select('id_createur_bibliotheque, nom_createur_bibliotheque, prenom_createur_bibliotheque')
+                 ->from('createur_bibliotheque')
+                 ->where('id_type_createur', 1)
+                 ->get();
+                 if($query->num_rows() > 0){
+                    $result = $query->result_array();
+                    return $result;
+                  }
     }
+
+    public function selectDessinateur(){
+        $query = $this->db->select('id_createur_bibliotheque, nom_createur_bibliotheque, prenom_createur_bibliotheque')
+                  ->from('createur_bibliotheque')
+                  ->where('id_type_createur', 2)
+                  ->get();
+                  if($query->num_rows() > 0){
+                     $result = $query->result_array();
+                     return $result;
+                   }
+     }
 
     public function enregistrerBD(){
-        $type_document = $this->input->post('id_type_document');
-      //  $type_document = $this->security->xss_clean($type_document);
-        $type_document = $this->db->escape($type_document);
 
-        $libelle_document = $this->input->post('libelle_type_document');
-     //   $libelle_document = $this->security->xss_clean($libelle_document);
-        $libelle_document = $this->db->escape($libelle_document);
-
-        $this->db->select($type_document);
-        $this->db->from('type_document_bibliotheque');
-        $this->db->where($libelle_document = 'Bande dessinée');
-
-        $ISBN = $this->input->post('ISBN_document');
-        $titre = $this->input->post('titre_document');
-        $date = $this->input->post('date_parrution_document');
-
-        $data = array(
-            'ISBN_document' => $this->db->escape_str($ISBN),
-            'titre_document' => $this->db->escape_str($titre),
-            'date_parrution_document' => $this->db->escape_str($date),
-            'id_type_document' => $this->db->escape_str($type_document)
-        );
-
-        $this->db->insert('document_bibliotheque', $data);
     }
 
     public function createurBD(){
 
-        $type_createur = $this->input->post('id_type_createur');
-        $type_createur = $this->security->xss_clean($type_createur);
-        $type_createur = $this->db->escape($type_createur);
-
-        $type_createur2 = $this->input->post('id_type_createur');
-        $type_createur2 = $this->security->xss_clean($type_createur);
-        $type_createur2 = $this->db->escape($type_createur);
-
-        $libelle_createur = $this->input->post('libelle_type_createur');
-        $libelle_createur = $this->security->xss_clean($libelle_createur);
-        $libelle_createur = $this->db->escape($libelle_createur);
-
-        $this->db->select($type_createur);
-        $this->db->from('type_createur');
-        $this->db->where($libelle_createur = 'auteur');
-
-        $this->db->select($type_createur2);
-        $this->db->from('type_createur');
-        $this->db->where($libelle_createur = 'dessinateur');
-
-        $nom_createur = $this->input->post('nom_createur_bibliotheque');
-        $prenom_createur = $this->input->post('prenom_createur_bibliotheque');
-
-        $data = array(
-            'nom_createur_bibliotheque' => $this->db->escape_str($nom_createur),
-            'prenom_createur_bibliotheque' => $this->db->escape_str($prenom_createur),
-            'id_type_createur' => $this->db->escape_str($type_createur),
-        );
-
-        $data = array(
-            'nom_createur_bibliotheque' => $this->db->escape_str($nom_createur),
-            'prenom_createur_bibliotheque' => $this->db->escape_str($prenom_createur),
-            'id_type_createur' => $this->db->escape_str($type_createur2),
-        );
-
-        $this->db->insert('createur_bibliotheque', $data);
+      
     }
 
     public function joinCreaBD(){

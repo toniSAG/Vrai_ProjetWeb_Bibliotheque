@@ -56,10 +56,12 @@ $route['translate_uri_dashes'] = FALSE;
 $route['abonneController/abonne'] = 'abonneController/abonne';
 $route['documentController/document'] = 'documentController/document';
 $route['EmpruntController/emprunt'] = 'EmpruntController/emprunt';
+$route['EmpruntController/deleteEmprunt/(:num)'] = 'EmpruntController/deleteEmprunt/$1';
 
-$route['abonneController/deleteAbonne'] = 'abonneController/deleteAbonne';
-
+$route['enregistrer-createur'] = 'documentController/enregistrerCreateur';
 $route['enregistrer-livre'] = 'documentController/enregistrerLivre';
+$route['enregistrer-BD'] = 'documentController/enregistrerBD';
 
+$route['abonneController/deleteAbonne/(:num)'] = 'abonneController/deleteAbonne/$1';
 $route['enregistrer-abonne'] = 'abonneController/enregistrerAbonne';
 $route['enregistrer-emprunt'] = 'empruntController/enregistrerEmprunt';

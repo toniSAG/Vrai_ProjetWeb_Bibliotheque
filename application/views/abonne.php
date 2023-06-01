@@ -64,15 +64,18 @@
             
                 <?php foreach ($abonne_bibliotheque as $abonne):?>
                     
-            
+                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
                 <tr class = "scroll_container">
                     
-                    <td class = "table-primary text-center"><?php echo htmlspecialchars($abonne['prenom_abonne_bibliotheque']);?></td>
-                    <td class = "table-primary text-center"><?php echo htmlspecialchars($abonne['nom_abonne_bibliotheque']);?></td>
-                    <td class = "table-primary text-center"><?php echo htmlspecialchars($abonne['mail_abonne_bibliotheque']);?></td>
-                    <td class = "table-primary text-center"><button class = "btn btn-danger btn-sm supprimer"  id = "deleteButton" data-id ="<?php echo $abonne['id_abonne_bibliotheque'];?>">Supprimer</button>      
-                </td>
+                    <td class = "table-primary text-center" id = "id_abonne_bibliotheque"><?php echo htmlspecialchars($abonne['prenom_abonne_bibliotheque']);?></td>
+                    <td class = "table-primary text-center" id = "id_abonne_bibliotheque"><?php echo htmlspecialchars($abonne['nom_abonne_bibliotheque']);?></td>
+                    <td class = "table-primary text-center" id = "id_abonne_bibliotheque"><?php echo htmlspecialchars($abonne['mail_abonne_bibliotheque']);?></td>
+                    <td class = "table-primary text-center">
+                    <form method="POST" action="<?php echo site_url('abonneController/deleteAbonne/' . $abonne['id_abonne_bibliotheque']); ?>" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet abonné ?')">
+                    <button type="submit" class="btn btn-danger btn-sm" name="supprimer">Supprimer</button>
+                    </form>  
+                    </td>
                   <!--  <td class = "table-primary text-center">
                         <input class = "btn btn-danger btn-sm supprimer" type = "submit" data-id ="<?php// echo $abonne['id_abonne_bibliotheque'];?>" placeholder = "Supprimer">
                     </td>-->
@@ -85,17 +88,27 @@
     
 
 </div>
-<script src = "https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- modal du bouton supprimer -->
+
+
+
+
+
 
 <script>
+    /*
     $(document).ready(function() {
         $('.supprimer').click(function() {
             var id = $(this).data('id');
-            if (confirm("Voulez vous vraiment supprimer cer élément ?")) {
+            console.log('test');
+            console.log(id);
+            
                 $.ajax({
                     url: '<?php echo base_url("abonneController/deleteAbonne");?>',
                     type: 'POST',
-                    data: {action: "supprimer_abonne", id: id_abonne_bibliotheque},
+                    data: {action: "supprimer_abonne", id_abonne_bibliotheque: id},
+                    dataType: 'json',
                     success: function(response){
 
                         if(response.success){
@@ -110,9 +123,9 @@
                         alert("Erreur lors de la suppression des données : " + thrownError);
                     }
                 });
-            }
+            
         });
-    });
+    });*/
 </script>
 
     </body>

@@ -27,12 +27,24 @@
               
                  <input class = "form-control" type = "date" required pattern = "\d{4}-\d{2}-\d{2}" name = "date_emprunt">
                  <input class = "form-control" type = "date" required pattern = "\d{4}-\d{2}-\d{2}" name = "date_retour">
-                 <input id = "emprunt" class = "form-control" type = "text" name = "nom_abonne_bibliotheque" placeholder = "Nom de l'abonné">
-                 <input id = "emprunt" class = "form-control" type = "text" name = "prenom_abonne_bibliotheque" placeholder = "Prénom de l'abonné">
-                 <input id = "emprunt" class = "form-control" type = "text" name = "nom_employe_bibliotheque" placeholder = "Nom de l'employé">
-                 <input id = "emprunt" class = "form-control" type = "text" name = "prenom_employe_bibliotheque" placeholder = "Prénom de l'employé">
-                 <input id = "emprunt" class = "form-control" type = "text" name = "titre_document" placeholder = "Document emprunté">
             
+                 <select class = "form-select" id = "id_abonne" name = "id_abonne">
+              <?php foreach($abonnes as $abonne):?>
+              <option value = "<?php echo $abonne['id_abonne_bibliotheque']?>"><?php echo htmlspecialchars($abonne['prenom_abonne_bibliotheque']);echo " "; echo htmlspecialchars($abonne['nom_abonne_bibliotheque']);?></option>
+              <?php endforeach;?>
+              </select>
+
+              <select class = "form-select" id = "id_employe" name = "id_employe">
+              <?php foreach($employes as $employe):?>
+              <option value = "<?php echo $employe['id_employe_bibliotheque']?>"><?php echo htmlspecialchars($employe['prenom_employe_bibliotheque']);echo " "; echo htmlspecialchars($employe['nom_employe_bibliotheque']);?></option>
+              <?php endforeach;?>
+              </select>
+
+              <select class = "form-select" id = "ISBN" name = "ISBN">
+              <?php foreach($documents as $document):?>
+              <option value = "<?php echo $document['ISBN_document']?>"><?php echo htmlspecialchars($document['titre_document']);?></option>
+              <?php endforeach;?>
+              </select>
 
                  <input class = "btn btn-success" type = "submit" name = "enregistrer" placeholder = "Valider l' emprunt">
 
@@ -98,9 +110,14 @@
                         <td class = "table-primary"><?php echo htmlspecialchars($donnees["prenom_abonne_bibliotheque"]); echo " "; echo htmlspecialchars($donnees["nom_abonne_bibliotheque"]);?></td>
                         <td class = "table-primary"><?php echo htmlspecialchars($donnees["titre_document"]); ?></td>
                         <td class = "table-primary"><?php echo htmlspecialchars($donnees["ISBN_document"]); ?></td>
-                        <td class = "table-primary"><?php echo htmlspecialchars($donnees["date_emprunt"]); ?></td>
-                        <td class = "table-primary"><?php echo htmlspecialchars($donnees["date_retour"]); ?></td>
+                        <td class = "table-primary"><?php echo date('d-m-Y', strtotime($donnees["date_emprunt"])); ?></td>
+                        <td class = "table-primary"><?php echo date('d-m-Y', strtotime($donnees["date_retour"])); ?></td>
                         <td class = "table-primary"><?php echo htmlspecialchars($donnees["prenom_employe_bibliotheque"]); echo " "; echo htmlspecialchars($donnees["nom_employe_bibliotheque"]);?></td>
+                        <td class = "table-primary text-center">
+                    <form method="POST" action="<?php echo site_url('EmpruntController/deleteEmprunt/' . $donnees['id_emprunt']); ?>" onsubmit="return confirm('Êtes-vous sûr de vouloir retourner ce document ?')">
+                    <button type="submit" class="btn btn-danger btn-sm" name="supprimer">Supprimer</button>
+                    </form>  
+                    </td>
                         
                     </tr>
                 

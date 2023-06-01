@@ -21,9 +21,7 @@
 
               <ul class = "navbar-nav">
 
-                <li class = "nav-item">
-                  <a class = "nav-link active" href="acceuil">Retourner à l'acceuil</a>
-                </li>
+                
 
                 <li class = "nav-item">
                     <a class = "nav-link" href = "<?= site_url('EmpruntController/emprunt')?>">Gestion des emprunts</a>
