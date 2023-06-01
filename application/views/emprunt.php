@@ -58,32 +58,7 @@
     
     </div>
 
-    <p>
-    <button class = "btn btn-primary" type = "button" data-bs-toggle = "collapse" data-bs-target = "#formulaireRetour" aria-expanded = "false" aria-controls = "formulaireRetour">
-    Retour de document
-    </button></p>
-
-    <div class = "container collapse" id = "formulaireRetour">
-        
-            <form id = "retour" class = "Form" name = "fo" method = "post" action = "">
-
-            <div class = "row">
-
-                <div class = "justify-content-*-center">
-
-            <label for = "retour">Retour de document</label>
-                <input class = "form-control" type = "text" name = "titre_document" placeholder = "Document retourné">
-                <input class = "form-control" type = "text" name = "ISBN_document" placeholder = "ISBN du document">
-                <input class = "form-control" type = "text" name = "nom_abonne_bibliotheque" placeholder = "Nom de l'abonné">
-                <input class = "form-control" type = "text" name = "prenom_abonne_bibliotheque" placeholder = "Prénom de l'abonné">
-                
-                <button class = "btn btn-primary" type = "submit" name = "retour">Valider le retour</button>
-
-                </div>
-            </div>
-
-            </form>
-    </div>
+    
 
 </div>
 
