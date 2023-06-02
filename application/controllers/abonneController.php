@@ -7,7 +7,8 @@ class abonneController extends CI_Controller{
         $this->load->library('form_validation', 'input');
         $this->load->database();
         $this->load->model('abonneModel');
-        $this->load->view('header');
+        $data['active_page'] = 'abonne';
+        $this->load->view('header', $data);
         
     }
 

@@ -24,15 +24,15 @@
                 
 
                 <li class = "nav-item">
-                    <a class = "nav-link" href = "<?= site_url('EmpruntController/emprunt')?>">Gestion des emprunts</a>
+                    <a class = "nav-link <?php if($active_page == 'emprunt') echo 'active';?>" href = "<?= site_url('EmpruntController/emprunt')?>">Gestion des emprunts</a>
                 </li>
 
                 <li class = "nav-item">
-                    <a class = "nav-link" href = "<?= site_url('documentController/document')?>">Gestion des document</a>
+                    <a class = "nav-link <?php if($active_page == 'document') echo 'active';?>" href = "<?= site_url('documentController/document')?>">Gestion des document</a>
                 </li>
 
                 <li class = "nav-item">
-                    <a class = "nav-link active" href = "<?= site_url('abonneController/abonne')?>">Gestion des abonnés</a>
+                    <a class = "nav-link <?php if($active_page == 'abonne') echo 'active';?>" href = "<?= site_url('abonneController/abonne')?>">Gestion des abonnés</a>
                 </li>
 
               </ul>

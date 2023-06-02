@@ -7,7 +7,8 @@ class documentController extends CI_Controller{
         $this->load->helper(array('url', 'form'));
         $this->load->database();
         $this->load->model('documentModel');
-        $this->load->view('header');
+        $data['active_page'] = 'document';
+        $this->load->view('header', $data);
     }
 
     public function enregistrerCreateur(){

@@ -8,7 +8,8 @@ class EmpruntController extends CI_Controller{
         $this->load->library('form_validation');
         $this->load->database();
         $this->load->model('empruntModel');
-        $this->load->view('header');
+        $data['active_page'] = 'emprunt';
+        $this->load->view('header', $data);
         
     }
 
